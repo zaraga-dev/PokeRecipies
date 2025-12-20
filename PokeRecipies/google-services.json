@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1058160525028",
+    "project_id": "pokerecipies",
+    "storage_bucket": "pokerecipies.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058160525028:android:4b97ef89ef8ac08438b6f1",
+        "android_client_info": {
+          "package_name": "mx.zaraga.pokerecipies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1058160525028-s67k2cdjskkdnnca67lhlf26hne9hg7e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfwKjoE8DPCA6O48-x1jm9-vfp70bU7Mc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1058160525028-s67k2cdjskkdnnca67lhlf26hne9hg7e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
