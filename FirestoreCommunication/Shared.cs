@@ -1,54 +1,126 @@
-﻿using Google.Cloud.Firestore;
+﻿using Google.Api.Gax.Grpc.Rest;
+using Google.Cloud.Firestore;
 
-namespace FirestoreCommunication;
+namespace zaraga.FirestoreCommunication;
 
 public class Shared
 {
-    private static string projectId = "1058160525028";
-    private static string databaseId = "(default)";
+    private static string _projectId = "";
+    private const string _fileName = "datastore-sdk.json";
 
-    public async Task Connect()
+    private FirestoreDb? firestoreDb;
+
+    public Shared(string projectId)
+    {
+        _projectId = projectId;
+    }
+
+    private async Task ConnectDb()
     {
         try
         {
-            FirestoreDb db = new FirestoreDbBuilder { ProjectId = projectId, DatabaseId = databaseId }.Build();
+            if (firestoreDb != null)
+                return;
 
-            // Create a document with a random ID in the "users" collection.
-            CollectionReference collection = db.Collection("recipies");
-            DocumentReference document = await collection.AddAsync(new { Name = new { First = "Ada", Last = "Lovelace" }, Born = 1815 });
+            //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
-            // A DocumentReference doesn't contain the data - it's just a path.
-            // Let's fetch the current document.
-            DocumentSnapshot snapshot = await document.GetSnapshotAsync();
+            if (!await FileSystem.AppPackageFileExistsAsync(_fileName))
+                throw new ArgumentException($"File {_fileName} not found in app package.");
 
-            // We can access individual fields by dot-separated path
-            Console.WriteLine(snapshot.GetValue<string>("Name.First"));
-            Console.WriteLine(snapshot.GetValue<string>("Name.Last"));
-            Console.WriteLine(snapshot.GetValue<int>("Born"));
+            var stream = await FileSystem.OpenAppPackageFileAsync(_fileName);
+            var reader = new StreamReader(stream);
+            var content = reader.ReadToEnd();
 
-            // Or deserialize the whole document into a dictionary
-            Dictionary<string, object> data = snapshot.ToDictionary();
-            Dictionary<string, object> name = (Dictionary<string, object>)data["Name"];
-            Console.WriteLine(name["First"]);
-            Console.WriteLine(name["Last"]);
-
-            // See the "data model" guide for more options for data handling.
-
-            // Query the collection for all documents where doc.Born < 1900.
-            Query query = collection.WhereLessThan("Born", 1900);
-            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
-            foreach (DocumentSnapshot queryResult in querySnapshot.Documents)
+            firestoreDb = await new FirestoreDbBuilder
             {
-                string firstName = queryResult.GetValue<string>("Name.First");
-                string lastName = queryResult.GetValue<string>("Name.Last");
-                int born = queryResult.GetValue<int>("Born");
-                Console.WriteLine($"{firstName} {lastName}; born {born}");
-            }
+                ProjectId = _projectId,
+                ConverterRegistry = new ConverterRegistry
+                {
+                  new DateTimeToTimeSpanConverter()
+                },
+                // *** Key fix ***
+                GrpcAdapter = RestGrpcAdapter.Default,
+                JsonCredentials = content
+            }.BuildAsync();
+
         }
         catch (Exception ex)
         {
-
             throw;
         }
+    }
+
+    /// <summary>
+    /// Add data to Firestore collection
+    /// </summary>
+    /// <param name="collectionName"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public async Task AddData(string collectionName, object data)
+    {
+        //open DatastoreConnection
+        await ConnectDb();
+
+        DocumentReference reference = await firestoreDb.Collection(collectionName).AddAsync(data);
+        string id = reference.Id;
+
+    }
+
+    /// <summary>
+    /// Get list of data from Firestore collection
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="collectionName"></param>
+    /// <returns></returns>
+    public async Task<List<T>> GetList<T>(string collectionName) where T : class
+    {
+        //open DatastoreConnection
+        await ConnectDb();
+
+        var data = await firestoreDb.Collection(collectionName).GetSnapshotAsync();
+        var sampleModel = data.Documents.Select(doc =>
+        {
+            var model = doc.ConvertTo<T>();
+            return model;
+        }).ToList();
+
+        return sampleModel;
+    }
+
+    /// <summary>
+    /// Get item by id from Firestore collection if exists otherwise return null
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="collectionName"></param>
+    /// <param name="itemId"></param>
+    /// <returns></returns>
+    public async Task<T?> GetItem<T>(string collectionName, string itemId) where T : class
+    {
+        //open DatastoreConnection
+        await ConnectDb();
+
+        DocumentReference docRef = firestoreDb.Collection(collectionName).Document(itemId);
+        DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+        if (snapshot.Exists)
+        {
+            T model = snapshot.ConvertTo<T>();
+            return model;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+}
+
+
+public class DateTimeToTimeSpanConverter : IFirestoreConverter<DateTime>
+{
+    public object ToFirestore(DateTime value) => Timestamp.FromDateTime(value.ToUniversalTime());
+    public DateTime FromFirestore(object value)
+    {
+        Timestamp timestamp = (Timestamp)value;
+        return timestamp.ToDateTime();
     }
 }

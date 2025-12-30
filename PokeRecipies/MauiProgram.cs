@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Maui;
-using FirestoreCommunication;
+using zaraga.FirestoreCommunication;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.LifecycleEvents;
-using Newtonsoft.Json.Serialization;
 using PokeRecipies.Routes;
 using zaraga.logger.extensions;
 
@@ -17,7 +15,7 @@ namespace PokeRecipies
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .AddZaragaLogger()
-                .UseFirestoreCommunication()
+                .UseFirestoreCommunication(applicationId: "pokerecipies")
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -38,10 +36,6 @@ namespace PokeRecipies
         {
             services.AddSingleton<RecipiesListPage, RecipiesListViewModel>();
             services.AddSingleton<RecipiePage, RecipiePageViewModel>();
-
-
-
-            services.AddSingleton<FirestoreCommunication.Shared>();
 
         }
 

@@ -1,12 +1,14 @@
-﻿namespace FirestoreCommunication;
+﻿namespace zaraga.FirestoreCommunication;
 
 public static class Extensions
 {
-    public static MauiAppBuilder UseFirestoreCommunication(this MauiAppBuilder builder)
+    public static MauiAppBuilder UseFirestoreCommunication(this MauiAppBuilder builder, string applicationId)
     {
-        // Register services related to Firestore communication here.
-        // For example:
-        // builder.Services.AddSingleton<IFirestoreService, FirestoreService>();
+        builder.Services.AddSingleton<Shared>(provider =>
+        {
+            return new Shared(applicationId);
+        });
+
         return builder;
     }
 }
