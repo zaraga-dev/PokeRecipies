@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PokeRecipies.Routes;
+namespace PokeRecipies.Routes.Recipes;
 
-public partial class RecipiePageViewModel : ObservableObject
+public partial class RecipePageViewModel : ObservableObject
 {
     [ObservableProperty]
     string exampleText;

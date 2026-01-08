@@ -26,10 +26,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\pokemon_recipies_icon.png"
-				  ForegroundFile="Resources\AppIcon\pokemon_recipies_icon.png"
-				  ForegroundScale="0.80"
-				  Color="#744ea5" />
+		<MauiIcon Include="Resources\AppIcon\pokemon_recipies_icon.png" ForegroundFile="Resources\AppIcon\pokemon_recipies_icon.png" ForegroundScale="0.80" Color="#744ea5" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\sleep_recipes_icon.png" Color="#744ea5" BaseSize="256,256" Resize="True" />
@@ -72,10 +69,28 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<MauiXaml Update="Routes\RecipiePage\RecipiePage.xaml">
+	  <Compile Update="Routes\Recipes\Recipe_detail\RecipePage.xaml.cs">
+	    <DependentUpon>RecipePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Routes\Recipes\Recipies_list\RecipeListPage.xaml.cs">
+	    <DependentUpon>RecipeListPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<MauiXaml Update="Routes\Ingredients\Ingedient_detail\IngredientPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Routes\Ingredients\Ingredient_list\IngredientListPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Routes\Menu\MenuPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Routes\Recipes\Recipe_detail\RecipePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Routes\RecipiesList\RecipiesListPage.xaml">
+		<MauiXaml Update="Routes\Recipes\Recipies_list\RecipeListPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>

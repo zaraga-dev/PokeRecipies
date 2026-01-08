@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Maui;
-using zaraga.FirestoreCommunication;
 using Microsoft.Extensions.Logging;
 using PokeRecipies.Routes;
+using PokeRecipies.Routes.Ingredients;
+using PokeRecipies.Routes.Menu;
+using PokeRecipies.Routes.Recipes;
+using zaraga.FirestoreCommunication;
 using zaraga.logger.extensions;
 
 namespace PokeRecipies
@@ -20,9 +23,8 @@ namespace PokeRecipies
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
-
-            SetupPages(builder.Services);
+                })
+                .SetupPages();
 
 
 #if DEBUG
@@ -32,13 +34,18 @@ namespace PokeRecipies
         }
 
 
-        private static void SetupPages(IServiceCollection services)
+        private static MauiAppBuilder SetupPages(this MauiAppBuilder builder)
         {
-            services.AddSingleton<RecipiesListPage, RecipiesListViewModel>();
-            services.AddSingleton<RecipiePage, RecipiePageViewModel>();
+            builder.Services.AddSingleton<MenuPage, MenuPageViewModel>();
 
+            builder.Services.AddSingleton<RecipeListPage, RecipeListViewModel>();
+            builder.Services.AddSingleton<RecipePage, RecipePageViewModel>();
+
+            builder.Services.AddSingleton<IngredientListPage, IngredientListViewModel>();
+            builder.Services.AddSingleton<IngredientPage, IngredientPageViewModel>();
+
+            return builder;
         }
-
 
     }
 }

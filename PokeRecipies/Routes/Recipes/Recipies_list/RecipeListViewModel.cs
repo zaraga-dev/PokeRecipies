@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PokeRecipies.Routes;
+namespace PokeRecipies.Routes.Recipes;
 
-public partial class RecipiesListViewModel : ObservableObject
+public partial class RecipeListViewModel : ObservableObject
 {
 
     [ObservableProperty]
     string exampleText;
 
 
-    public RecipiesListViewModel()
+    public RecipeListViewModel()
     {
         ExampleText = "Hello from RecipiesListViewModel";
     }
