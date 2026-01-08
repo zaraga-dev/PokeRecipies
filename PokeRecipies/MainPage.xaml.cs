@@ -1,4 +1,4 @@
-﻿using Google.Cloud.Firestore;
+﻿using PokeRecipies.Models;
 
 namespace PokeRecipies
 {
@@ -23,26 +23,8 @@ namespace PokeRecipies
                     Steps = new List<string> { "Cook the rice.", "Prepare the fish.", "Assemble the bowl." },
                     CreatedAt = DateTime.UtcNow
                 });
+
         }
-    }
-
-
-
-    [FirestoreData]
-    public class SampleModel
-    {
-        public string Id { get; set; }
-        [FirestoreProperty]
-        public string Name { get; set; }
-        [FirestoreProperty]
-        public string Description { get; set; }
-        [FirestoreProperty]
-        public List<string> Ingredients { get; set; }
-        [FirestoreProperty]
-        public List<string> Steps { get; set; }
-        //[FirestoreProperty(ConverterType = typeof(DateTieToTieSpanConverter))]
-        [FirestoreProperty]
-        public DateTime CreatedAt { get; set; }
     }
 
 }

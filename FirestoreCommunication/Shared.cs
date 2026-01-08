@@ -6,7 +6,7 @@ namespace zaraga.FirestoreCommunication;
 public class Shared
 {
     private static string _projectId = "";
-    private const string _fileName = "datastore-sdk.json";
+    private const string _fileName = "firebase-adminsdk.json";
 
     private FirestoreDb? firestoreDb;
 

@@ -12,17 +12,17 @@
         <ShellContent
             Title="Home"
             ContentTemplate="{DataTemplate local:MainPage}"
-            Icon="dotnet_bot.png"
+            Icon="ic_cheff_black.png"
             Route="MainPage" />
         <ShellContent
             Title="Lista de recetas"
             ContentTemplate="{DataTemplate routes:RecipiesListPage}"
-            Icon="dotnet_bot.png"
+            Icon="ic_cheff_black.png"
             Route="RecipiesListPage" />
         <ShellContent
             Title="Lista de recetas"
             ContentTemplate="{DataTemplate routes:RecipiePage}"
-            Icon="dotnet_bot.png"
+            Icon="ic_cheff_black.png"
             Route="RecipiePage" />
     </TabBar>
 

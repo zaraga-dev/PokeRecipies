@@ -396,4 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-/PokeRecipies/Resources/Raw/datastore-sdk.json
+/PokeRecipies/Resources/Raw/firebase-adminsdk.json

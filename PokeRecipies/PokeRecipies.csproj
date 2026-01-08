@@ -26,7 +26,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\pokemon_recipies_icon.png" ForegroundFile="Resources\AppIcon\pokemon_recipies_icon.png" Color="#744ea5" Resize="True" BaseSize="256,256" />
+		<MauiIcon Include="Resources\AppIcon\pokemon_recipies_icon.png"
+				  ForegroundFile="Resources\AppIcon\pokemon_recipies_icon.png"
+				  ForegroundScale="0.80"
+				  Color="#744ea5" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\sleep_recipes_icon.png" Color="#744ea5" BaseSize="256,256" Resize="True" />
@@ -46,12 +49,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AndroidResource Remove="Views\**" />
-	  <Compile Remove="Views\**" />
-	  <EmbeddedResource Remove="Views\**" />
-	  <MauiCss Remove="Views\**" />
-	  <MauiXaml Remove="Views\**" />
-	  <None Remove="Views\**" />
+		<AndroidResource Remove="Views\**" />
+		<Compile Remove="Views\**" />
+		<EmbeddedResource Remove="Views\**" />
+		<MauiCss Remove="Views\**" />
+		<MauiXaml Remove="Views\**" />
+		<None Remove="Views\**" />
 	</ItemGroup>
 
 	<ItemGroup>
