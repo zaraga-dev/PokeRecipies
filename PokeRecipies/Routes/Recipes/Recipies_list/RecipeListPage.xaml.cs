@@ -8,7 +8,14 @@ public partial class RecipeListPage : ContentPage
     {
         InitializeComponent();
         BindingContext = viewModel = model;
-        //BindingContext = viewModel = new RecipiesListViewModel();
+        Loaded += RecipeListPage_Loaded;
     }
 
+    private void RecipeListPage_Loaded(object? sender, EventArgs e)
+    {
+        if (viewModel.LoadRecipesDataCommand.CanExecute(null))
+        {
+            viewModel.LoadRecipesDataCommand.Execute(null);
+        }
+    }
 }

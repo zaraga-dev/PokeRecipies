@@ -44,7 +44,7 @@ public class Shared
             }.BuildAsync();
 
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }
@@ -60,6 +60,8 @@ public class Shared
     {
         //open DatastoreConnection
         await ConnectDb();
+        if (firestoreDb == null)
+            return;
 
         DocumentReference reference = await firestoreDb.Collection(collectionName).AddAsync(data);
         string id = reference.Id;
@@ -72,17 +74,25 @@ public class Shared
     /// <typeparam name="T"></typeparam>
     /// <param name="collectionName"></param>
     /// <returns></returns>
-    public async Task<List<T>> GetList<T>(string collectionName) where T : class
+    public async Task<List<T>?> GetList<T>(string collectionName) where T : class
     {
         //open DatastoreConnection
         await ConnectDb();
+        if (firestoreDb == null)
+            return null;
 
         var data = await firestoreDb.Collection(collectionName).GetSnapshotAsync();
-        var sampleModel = data.Documents.Select(doc =>
+        var sampleModel = new List<T>();
+        foreach (var doc in data.Documents)
         {
-            var model = doc.ConvertTo<T>();
-            return model;
-        }).ToList();
+            
+            sampleModel.Add(doc.ConvertTo<T>());
+        }
+        //var sampleModel = data.Documents.Select(doc =>
+        //{
+        //    var model = doc.ConvertTo<T>();
+        //    return model;
+        //}).ToList();
 
         return sampleModel;
     }
@@ -98,6 +108,8 @@ public class Shared
     {
         //open DatastoreConnection
         await ConnectDb();
+        if (firestoreDb == null)
+            return null;
 
         DocumentReference docRef = firestoreDb.Collection(collectionName).Document(itemId);
         DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();

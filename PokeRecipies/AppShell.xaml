@@ -11,16 +11,18 @@
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar>
-        <ShellContent
-            Title="Completados"
-            ContentTemplate="{DataTemplate local:MainPage}"
-            Icon="ic_cheff_black.png"
-            Route="MainPage" />
-        <ShellContent
-            Title="Recetas"
-            ContentTemplate="{DataTemplate recipes:RecipeListPage}"
-            Icon="ic_checklist_black.png"
-            Route="RecipiesListPage" />
+        <Tab Title="Recetas" Icon="ic_checklist_black.png">
+            <ShellContent
+                Title="Curry"
+                ContentTemplate="{DataTemplate recipes:RecipeListPage}"
+                Route="RecipiesListPage" />
+
+            <ShellContent
+                Title="Ensaladas"
+                ContentTemplate="{DataTemplate recipes:SaladsListPage}"
+                Route="SaladsListViewModel" />
+
+        </Tab>
         <ShellContent
             Title="Ingredientes"
             ContentTemplate="{DataTemplate ingredients:IngredientListPage}"

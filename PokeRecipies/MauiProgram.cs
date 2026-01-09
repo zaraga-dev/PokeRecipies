@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui;
+﻿using Android.Net;
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using PokeRecipies.Routes;
 using PokeRecipies.Routes.Ingredients;
@@ -27,6 +28,8 @@ namespace PokeRecipies
                 .SetupPages();
 
 
+            RegisterRoutes();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
@@ -44,7 +47,15 @@ namespace PokeRecipies
             builder.Services.AddSingleton<IngredientListPage, IngredientListViewModel>();
             builder.Services.AddSingleton<IngredientPage, IngredientPageViewModel>();
 
+            builder.Services.AddSingleton<SaladsListPage, SaladsListViewModel>();
+
             return builder;
+        }
+
+        private static void RegisterRoutes()
+        {
+            Routing.RegisterRoute(nameof(RecipePage), typeof(RecipePage));
+            Routing.RegisterRoute(nameof(IngredientPage), typeof(IngredientPage));
         }
 
     }

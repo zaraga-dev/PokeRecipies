@@ -4,16 +4,70 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PokeRecipies.Routes.Recipes"
-    Title="RecipiesListPage"
+    x:Name="page"
+    Title="Curry"
     x:DataType="local:RecipeListViewModel">
 
-    <VerticalStackLayout>
-        <Label
-            HorizontalOptions="Center"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" />
 
-        <Entry Text="{Binding ExampleText}" />
-    </VerticalStackLayout>
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <ActivityIndicator
+            Grid.Row="0"
+            IsRunning="{Binding LoadingRecipes}"
+            IsVisible="{Binding LoadingRecipes}" />
+
+        <RefreshView
+            Grid.Row="1"
+            Command="{Binding LoadRecipesDataCommand}"
+            IsRefreshing="{Binding LoadingRecipes}">
+
+            <CollectionView IsEnabled="{Binding LoadingRecipes, Converter={StaticResource InvertedBoolConverter}}" ItemsSource="{Binding RecipeList}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="local:RecipeModel">
+                        <Frame
+                            Margin="10"
+                            Padding="10"
+                            BorderColor="LightGray"
+                            CornerRadius="10"
+                            HasShadow="True">
+                            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.ViewRecipeDetailCommand, Source={x:Reference page}}" CommandParameter="{Binding .}" />
+                                </Grid.GestureRecognizers>
+
+                                <Image
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    HeightRequest="70"
+                                    Source="{Binding RecipeImage}"
+                                    WidthRequest="70" />
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontSize="20"
+                                    Text="{Binding RecipeName}" />
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    FontSize="14"
+                                    Text="{Binding RecipeDescription}" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </RefreshView>
+
+        <Button
+            Grid.Row="2"
+            Command="{Binding GoToRecipeDetailCommand}"
+            Text="Go to Detail" />
+    </Grid>
+
+
+
 
 </ContentPage>

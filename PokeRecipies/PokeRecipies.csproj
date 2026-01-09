@@ -93,6 +93,13 @@
 		<MauiXaml Update="Routes\Recipes\Recipies_list\RecipeListPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Routes\Recipes\Salads_list\SaladsListPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Converter\" />
 	</ItemGroup>
 
 </Project>
