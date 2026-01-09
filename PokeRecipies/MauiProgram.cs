@@ -41,13 +41,13 @@ namespace PokeRecipies
         {
             builder.Services.AddSingleton<MenuPage, MenuPageViewModel>();
 
-            builder.Services.AddSingleton<RecipeListPage, RecipeListViewModel>();
+            builder.Services.AddSingleton<CurryListPage, CurryListViewModel>();
             builder.Services.AddSingleton<RecipePage, RecipePageViewModel>();
+            builder.Services.AddSingleton<SaladsListPage, SaladsListViewModel>();
+            builder.Services.AddSingleton<DessertListPage, DessertListViewModel>();
 
             builder.Services.AddSingleton<IngredientListPage, IngredientListViewModel>();
             builder.Services.AddSingleton<IngredientPage, IngredientPageViewModel>();
-
-            builder.Services.AddSingleton<SaladsListPage, SaladsListViewModel>();
 
             return builder;
         }

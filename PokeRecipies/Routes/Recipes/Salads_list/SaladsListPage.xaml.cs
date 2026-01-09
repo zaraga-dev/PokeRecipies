@@ -2,11 +2,20 @@ namespace PokeRecipies.Routes.Recipes;
 
 public partial class SaladsListPage : ContentPage
 {
-    private SaladsListViewModel ViewModel;
+    private SaladsListViewModel _viewModel;
 
     public SaladsListPage(SaladsListViewModel viewModel)
     {
         InitializeComponent();
-        BindingContext = ViewModel = viewModel;
+        BindingContext = _viewModel = viewModel;
+        Loaded += SaladsListPage_Loaded;
+    }
+
+    private void SaladsListPage_Loaded(object? sender, EventArgs e)
+    {
+        if(_viewModel.LoadSaladListCommand.CanExecute(null))
+        {
+            _viewModel.LoadSaladListCommand.Execute(null);
+        }
     }
 }

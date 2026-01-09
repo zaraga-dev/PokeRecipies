@@ -14,14 +14,18 @@
         <Tab Title="Recetas" Icon="ic_checklist_black.png">
             <ShellContent
                 Title="Curry"
-                ContentTemplate="{DataTemplate recipes:RecipeListPage}"
-                Route="RecipiesListPage" />
+                ContentTemplate="{DataTemplate recipes:CurryListPage}"
+                Route="CurryListPage" />
 
             <ShellContent
                 Title="Ensaladas"
                 ContentTemplate="{DataTemplate recipes:SaladsListPage}"
                 Route="SaladsListViewModel" />
 
+            <ShellContent
+                Title="Postres"
+                ContentTemplate="{DataTemplate recipes:DessertListPage}"
+                Route="DessertListPage" />
         </Tab>
         <ShellContent
             Title="Ingredientes"

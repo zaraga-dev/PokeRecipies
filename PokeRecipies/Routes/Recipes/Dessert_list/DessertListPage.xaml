@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="PokeRecipies.Routes.Recipes.SaladsListPage"
+    x:Class="PokeRecipies.Routes.Recipes.DessertListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PokeRecipies.Routes.Recipes"
     x:Name="page"
-    Title="Ensaladas"
-    x:DataType="{x:Type local:SaladsListViewModel}">
+    Title="Postres"
+    x:DataType="{x:Type local:DessertListViewModel}">
+
 
     <Grid RowDefinitions="Auto,*,Auto">
 
         <ActivityIndicator
             Grid.Row="0"
-            IsRunning="{Binding LoadingSaladList}"
-            IsVisible="{Binding LoadingSaladList}" />
+            IsRunning="{Binding LoadingDessertList}"
+            IsVisible="{Binding LoadingDessertList}" />
 
         <RefreshView
             Grid.Row="1"
-            Command="{Binding ReloadSaladDataCommand}"
+            Command="{Binding ReloadDessertDataCommand}"
             IsRefreshing="{Binding ReloadingRecipes}">
 
-            <CollectionView IsEnabled="{Binding LoadingSaladList, Converter={StaticResource InvertedBoolConverter}}" ItemsSource="{Binding RecipeList}">
+            <CollectionView
+                IsEnabled="{Binding LoadingDessertList, Converter={StaticResource InvertedBoolConverter}}"
+                ItemsSource="{Binding RecipeList}"
+                SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="local:RecipeModel">
                         <Frame

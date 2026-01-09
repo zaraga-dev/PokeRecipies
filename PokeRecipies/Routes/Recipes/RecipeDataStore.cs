@@ -9,7 +9,7 @@ namespace PokeRecipies.Routes.Recipes
 {
     public class RecipeDataStore
     {
-        private static string COLLECTION_NAME = "Recipe";
+        private const string COLLECTION_NAME = "Recipe";
 
         private static RecipeDataStore? _instance;
         private static zaraga.FirestoreCommunication.Shared? firestore;
@@ -50,7 +50,11 @@ namespace PokeRecipies.Routes.Recipes
             if (firestore == null)
                 return null;
 
-            return await firestore.GetList<RecipeModel>(COLLECTION_NAME);
+            List<RecipeModel>? recipes = await firestore.GetList<RecipeModel>(COLLECTION_NAME);
+            if (recipes == null)
+                return null;
+
+            return recipes;
         }
 
         public async Task<RecipeModel?> GetRecipe(string itemId)
@@ -58,7 +62,17 @@ namespace PokeRecipies.Routes.Recipes
             if (firestore == null)
                 return null;
 
-            return await firestore.GetItem<RecipeModel>(COLLECTION_NAME, itemId);
+            RecipeModel? recipe = await firestore.GetItem<RecipeModel>(COLLECTION_NAME, itemId);
+            if (recipe == null || recipe?.RecipeType == null)
+                return null;
+
+            var id = recipe.RecipeType.Id;
+            var path = recipe.RecipeType.Path;
+
+            var item = await recipe.RecipeType.GetSnapshotAsync();
+            var converted = item.ConvertTo<RecipeTypeModel>();
+
+            return recipe;
         }
 
     }
@@ -68,20 +82,27 @@ namespace PokeRecipies.Routes.Recipes
     {
         [FirestoreDocumentId]
         public string? Id { get; set; }
+
         [FirestoreProperty]
         public string? RecipeName { get; internal set; }
+
         [FirestoreProperty]
         public string? RecipeDescription { get; internal set; }
+
         [FirestoreProperty]
         public string? RecipeImage { get; set; }
 
-        //[FirestoreProperty]
-        //public RecipeTypeModel? RecipeType { get; set; }
+        [FirestoreProperty]
+        public DocumentReference? RecipeType { get; set; }
+
+        [FirestoreProperty]
+        public int RecipeTypeOrder { get; set; }
+
+        [FirestoreProperty]
+        public DateTime CreatedAt { get; internal set; }
 
         [FirestoreProperty]
         public List<string>? RecipeIngredients { get; internal set; }
-        [FirestoreProperty]
-        public DateTime CreatedAt { get; internal set; }
     }
 
     [FirestoreData]
@@ -89,8 +110,10 @@ namespace PokeRecipies.Routes.Recipes
     {
         [FirestoreDocumentId]
         public string? Id { get; set; }
+
         [FirestoreProperty]
         public int RecipeTypeOrder { get; set; }
+
         [FirestoreProperty]
         public string? RecipeTypeName { get; set; }
 

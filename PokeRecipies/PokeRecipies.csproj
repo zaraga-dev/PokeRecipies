@@ -72,8 +72,8 @@
 	  <Compile Update="Routes\Recipes\Recipe_detail\RecipePage.xaml.cs">
 	    <DependentUpon>RecipePage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Routes\Recipes\Recipies_list\RecipeListPage.xaml.cs">
-	    <DependentUpon>RecipeListPage.xaml</DependentUpon>
+	  <Compile Update="Routes\Recipes\Curry_list\CurryListPage.xaml.cs">
+	    <DependentUpon>CurryListPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -87,10 +87,13 @@
 		<MauiXaml Update="Routes\Menu\MenuPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Routes\Recipes\Dessert_list\DessertListPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Routes\Recipes\Recipe_detail\RecipePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Routes\Recipes\Recipies_list\RecipeListPage.xaml">
+		<MauiXaml Update="Routes\Recipes\Curry_list\CurryListPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Routes\Recipes\Salads_list\SaladsListPage.xaml">

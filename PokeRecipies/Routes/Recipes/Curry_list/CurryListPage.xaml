@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="PokeRecipies.Routes.Recipes.RecipeListPage"
+    x:Class="PokeRecipies.Routes.Recipes.CurryListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PokeRecipies.Routes.Recipes"
     x:Name="page"
     Title="Curry"
-    x:DataType="local:RecipeListViewModel">
-
+    x:DataType="local:CurryListViewModel">
 
     <Grid RowDefinitions="Auto,*,Auto">
 
@@ -18,10 +17,13 @@
 
         <RefreshView
             Grid.Row="1"
-            Command="{Binding LoadRecipesDataCommand}"
-            IsRefreshing="{Binding LoadingRecipes}">
+            Command="{Binding ReloadCurryDataCommand}"
+            IsRefreshing="{Binding ReloadingRecipes}">
 
-            <CollectionView IsEnabled="{Binding LoadingRecipes, Converter={StaticResource InvertedBoolConverter}}" ItemsSource="{Binding RecipeList}">
+            <CollectionView
+                IsEnabled="{Binding LoadingRecipes, Converter={StaticResource InvertedBoolConverter}}"
+                ItemsSource="{Binding RecipeList}"
+                SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="local:RecipeModel">
                         <Frame
@@ -61,13 +63,6 @@
 
         </RefreshView>
 
-        <Button
-            Grid.Row="2"
-            Command="{Binding GoToRecipeDetailCommand}"
-            Text="Go to Detail" />
     </Grid>
-
-
-
 
 </ContentPage>

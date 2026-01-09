@@ -22,8 +22,6 @@ public class Shared
             if (firestoreDb != null)
                 return;
 
-            //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-
             if (!await FileSystem.AppPackageFileExistsAsync(_fileName))
                 throw new ArgumentException($"File {_fileName} not found in app package.");
 
@@ -40,7 +38,7 @@ public class Shared
                 },
                 // *** Key fix ***
                 GrpcAdapter = RestGrpcAdapter.Default,
-                JsonCredentials = content
+                JsonCredentials = content,
             }.BuildAsync();
 
         }
@@ -82,17 +80,11 @@ public class Shared
             return null;
 
         var data = await firestoreDb.Collection(collectionName).GetSnapshotAsync();
-        var sampleModel = new List<T>();
-        foreach (var doc in data.Documents)
+        var sampleModel = data.Documents.Select(doc =>
         {
-            
-            sampleModel.Add(doc.ConvertTo<T>());
-        }
-        //var sampleModel = data.Documents.Select(doc =>
-        //{
-        //    var model = doc.ConvertTo<T>();
-        //    return model;
-        //}).ToList();
+            var model = doc.ConvertTo<T>();
+            return model;
+        }).ToList();
 
         return sampleModel;
     }

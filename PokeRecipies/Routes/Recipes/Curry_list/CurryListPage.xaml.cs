@@ -1,10 +1,10 @@
 namespace PokeRecipies.Routes.Recipes;
 
-public partial class RecipeListPage : ContentPage
+public partial class CurryListPage : ContentPage
 {
-    private RecipeListViewModel viewModel;
+    private CurryListViewModel viewModel;
 
-    public RecipeListPage(RecipeListViewModel model)
+    public CurryListPage(CurryListViewModel model)
     {
         InitializeComponent();
         BindingContext = viewModel = model;

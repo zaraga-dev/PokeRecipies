@@ -9,17 +9,30 @@ using System.Threading.Tasks;
 
 namespace PokeRecipies.Routes.Recipes;
 
-public partial class RecipeListViewModel : ObservableObject
+public partial class CurryListViewModel : ObservableObject
 {
+    private const int RECIPETYPE_CURRY = 1;
+
     [ObservableProperty] bool _loadingRecipes = false;
+    [ObservableProperty] bool _reloadingRecipes = false;
     [ObservableProperty] bool _viewDetail = false;
 
     [ObservableProperty] ObservableCollection<RecipeModel> _recipeList;
 
 
-    public RecipeListViewModel()
+    public CurryListViewModel()
     {
         RecipeList = new();
+    }
+
+    private bool CanLoadRecipesData()
+    {
+        return !LoadingRecipes;
+    }
+
+    private bool CanReloadRecipesData()
+    {
+        return !ReloadingRecipes;
     }
 
     private bool CanViewRecipeDetail()
@@ -32,29 +45,42 @@ public partial class RecipeListViewModel : ObservableObject
     /// Carga la lista de informacion
     /// </summary>
     /// <returns></returns>
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanLoadRecipesData))]
     private async Task LoadRecipesData()
     {
         LoadingRecipes = true;
 
+        RecipeList.Clear();
         var recipes = await RecipeDataStore.Instance.GetRecipes();
         if (recipes != null)
         {
-            RecipeList = new ObservableCollection<RecipeModel>(recipes);
-        }
-        else
-        {
-            RecipeList.Clear();
+            var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_CURRY);
+            foreach (var item in filter)
+            {
+                RecipeList.Add(item);
+            }
         }
 
         LoadingRecipes = false;
     }
 
-
-    [RelayCommand]
-    private async Task GoToRecipeDetail()
+    [RelayCommand(CanExecute = nameof(CanReloadRecipesData))]
+    private async Task ReloadCurryData()
     {
-        await Shell.Current.GoToAsync(nameof(RecipePage));
+        ReloadingRecipes = true;
+
+        RecipeList.Clear();
+        var recipes = await RecipeDataStore.Instance.GetRecipes();
+        if (recipes != null)
+        {
+            var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_CURRY);
+            foreach (var item in filter)
+            {
+                RecipeList.Add(item);
+            }
+        }
+
+        ReloadingRecipes = false;
     }
 
     [RelayCommand(CanExecute = nameof(CanViewRecipeDetail))]

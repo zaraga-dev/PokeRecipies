@@ -9,25 +9,25 @@ using System.Threading.Tasks;
 
 namespace PokeRecipies.Routes.Recipes
 {
-    public partial class SaladsListViewModel : ObservableObject
+    public partial class DessertListViewModel : ObservableObject
     {
-        private const int RECIPETYPE_SALAD = 2;
+        private const int RECIPETYPE_DESSERT = 3;
 
-        [ObservableProperty] private bool _loadingSaladList;
+        [ObservableProperty] private bool _loadingDessertList;
         [ObservableProperty] bool _reloadingRecipes = false;
         [ObservableProperty] bool _viewDetail;
         [ObservableProperty] ObservableCollection<RecipeModel> _recipeList;
 
 
-        public SaladsListViewModel()
+        public DessertListViewModel()
         {
             RecipeList = new ObservableCollection<RecipeModel>();
         }
 
 
-        private bool CanLoadSaladList()
+        private bool CanLoadDessertList()
         {
-            return !LoadingSaladList;
+            return !LoadingDessertList;
         }
 
         private bool CanReloadRecipesData()
@@ -40,27 +40,27 @@ namespace PokeRecipies.Routes.Recipes
             return !ViewDetail;
         }
 
-        [RelayCommand(CanExecute = nameof(CanLoadSaladList))]
-        private async Task LoadSaladList()
+        [RelayCommand(CanExecute = nameof(CanLoadDessertList))]
+        private async Task LoadDessertList()
         {
-            LoadingSaladList = true;
+            LoadingDessertList = true;
 
             RecipeList.Clear();
             var recipes = await RecipeDataStore.Instance.GetRecipes();
             if (recipes != null)
             {
-                var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_SALAD);
+                var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_DESSERT);
                 foreach (var item in filter)
                 {
                     RecipeList.Add(item);
                 }
             }
 
-            LoadingSaladList = false;
+            LoadingDessertList = false;
         }
 
         [RelayCommand(CanExecute = nameof(CanReloadRecipesData))]
-        private async Task ReloadSaladData()
+        private async Task ReloadDessertData()
         {
             ReloadingRecipes = true;
 
@@ -68,7 +68,7 @@ namespace PokeRecipies.Routes.Recipes
             var recipes = await RecipeDataStore.Instance.GetRecipes();
             if (recipes != null)
             {
-                var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_SALAD);
+                var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_DESSERT);
                 foreach (var item in filter)
                 {
                     RecipeList.Add(item);
