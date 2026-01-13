@@ -13,10 +13,19 @@ namespace PokeRecipies.Routes.Recipes
     {
         private const int RECIPETYPE_SALAD = 2;
 
-        [ObservableProperty] private bool _loadingSaladList;
-        [ObservableProperty] bool _reloadingRecipes = false;
-        [ObservableProperty] bool _viewDetail;
-        [ObservableProperty] ObservableCollection<RecipeModel> _recipeList;
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(LoadSaladListCommand))]
+        private bool _loadingSaladList;
+
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(ReloadSaladDataCommand))]
+        bool _reloadingRecipes = false;
+
+        [ObservableProperty]
+        bool _viewDetail;
+
+        [ObservableProperty]
+        ObservableCollection<RecipeModel> _recipeList;
 
 
         public SaladsListViewModel()
@@ -49,7 +58,7 @@ namespace PokeRecipies.Routes.Recipes
             var recipes = await RecipeDataStore.Instance.GetRecipes();
             if (recipes != null)
             {
-                var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_SALAD);
+                var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_SALAD).OrderBy(x => x.Id);
                 foreach (var item in filter)
                 {
                     RecipeList.Add(item);
@@ -68,7 +77,7 @@ namespace PokeRecipies.Routes.Recipes
             var recipes = await RecipeDataStore.Instance.GetRecipes();
             if (recipes != null)
             {
-                var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_SALAD);
+                var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_SALAD).OrderBy(x => x.Id);
                 foreach (var item in filter)
                 {
                     RecipeList.Add(item);

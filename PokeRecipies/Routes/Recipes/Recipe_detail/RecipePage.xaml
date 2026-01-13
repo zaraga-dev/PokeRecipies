@@ -5,31 +5,61 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PokeRecipies.Routes.Recipes"
     Title="{Binding RecipeName}"
-    x:DataType="local:RecipePageViewModel">
+    x:DataType="local:RecipePageViewModel"
+    Shell.TabBarIsVisible="False">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="10">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Command="{Binding LoadInitialDataCommand}"
+            Order="Secondary"
+            Text="Recargar Información" />
+    </ContentPage.ToolbarItems>
 
-            <Label Style="{StaticResource Headline}" Text="Nombre:" />
-            <Entry Placeholder="Nombre" Text="{Binding RecipeName}" />
-            <Label Style="{StaticResource Headline}" Text="Descripción:" />
-            <Entry Placeholder="Descripción" Text="{Binding RecipeDescription}" />
+    <Grid>
+        <Frame
+            BackgroundColor="Transparent"
+            BorderColor="Transparent"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Center">
+            <VerticalStackLayout>
+                <Label
+                    FontSize="Large"
+                    HorizontalOptions="Center"
+                    Text="{Binding StatusMessage}"
+                    VerticalOptions="Center" />
 
-            <Image
-                HeightRequest="100"
-                HorizontalOptions="Center"
-                Source="{Binding RecipeImage}"
-                WidthRequest="100" />
+                <ActivityIndicator IsRunning="{Binding IsBusy}" VerticalOptions="Center" />
+            </VerticalStackLayout>
+        </Frame>
 
-            <Label
-                FontSize="18"
-                HorizontalOptions="Center"
-                IsVisible="{Binding IsBusy}"
-                Text="{Binding StatusMessage}" />
+        <ScrollView IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+            <VerticalStackLayout Spacing="20">
+                <Frame BackgroundColor="{StaticResource Secondary}" CornerRadius="0">
+                    <Image
+                        HeightRequest="200"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        WidthRequest="200">
+                        <Image.Source>
+                            <!--  Caché de 10 dias  -->
+                            <UriImageSource
+                                CacheValidity="10:00:00:00"
+                                CachingEnabled="True"
+                                Uri="{Binding RecipeImage}" />
+                        </Image.Source>
+                    </Image>
+                </Frame>
 
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+                <Label
+                    Margin="10,0"
+                    FontSize="Medium"
+                    Text="{Binding RecipeDescription}" />
 
-        </VerticalStackLayout>
-    </ScrollView>
+                <BoxView />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
 
 </ContentPage>

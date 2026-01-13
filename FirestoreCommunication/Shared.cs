@@ -1,5 +1,6 @@
 ﻿using Google.Api.Gax.Grpc.Rest;
 using Google.Cloud.Firestore;
+using System.Collections;
 
 namespace zaraga.FirestoreCommunication;
 
@@ -40,7 +41,6 @@ public class Shared
                 GrpcAdapter = RestGrpcAdapter.Default,
                 JsonCredentials = content,
             }.BuildAsync();
-
         }
         catch (Exception)
         {
@@ -49,21 +49,64 @@ public class Shared
     }
 
     /// <summary>
-    /// Add data to Firestore collection
+    /// Clear a complete Firestore collection 
     /// </summary>
     /// <param name="collectionName"></param>
-    /// <param name="data"></param>
     /// <returns></returns>
-    public async Task AddData(string collectionName, object data)
+    public async Task DeleteCollection(string collectionName)
     {
         //open DatastoreConnection
         await ConnectDb();
         if (firestoreDb == null)
             return;
 
-        DocumentReference reference = await firestoreDb.Collection(collectionName).AddAsync(data);
-        string id = reference.Id;
+        //opcion 2
+        QuerySnapshot snapshot = await firestoreDb.Collection(collectionName).GetSnapshotAsync();
+        IReadOnlyList<DocumentSnapshot> documents = snapshot.Documents;
 
+        foreach (DocumentSnapshot document in documents)
+        {
+            Console.WriteLine("Deleting document {0}", document.Id);
+            await document.Reference.DeleteAsync();
+        }
+
+        Console.WriteLine("Finished deleting all documents from the collection.");
+
+    }
+
+    /// <summary>
+    /// Add data to Firestore collection
+    /// </summary>
+    /// <param name="collectionName"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public async Task<DocumentReference?> AddData(string collectionName, object data)
+    {
+        //open DatastoreConnection
+        await ConnectDb();
+        if (firestoreDb == null)
+            return null;
+
+        DocumentReference reference = await firestoreDb.Collection(collectionName).AddAsync(data);
+        return reference;
+    }
+
+
+    /// <summary>
+    /// Add data to Firestore collection wit specific document id
+    /// </summary>
+    /// <param name="collectionName"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public async Task<DocumentReference> AddData(string collectionName, int documentId, object data)
+    {
+        //open DatastoreConnection
+        await ConnectDb();
+        if (firestoreDb == null)
+            return null;
+
+        WriteResult reference = await firestoreDb.Collection(collectionName).Document(documentId.ToString()).SetAsync(data);
+        return firestoreDb.Collection(collectionName).Document(documentId.ToString());
     }
 
     /// <summary>

@@ -27,10 +27,8 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="local:RecipeModel">
                         <Frame
-                            Margin="10"
-                            Padding="10"
-                            BorderColor="LightGray"
-                            CornerRadius="10"
+                            Margin="10,5"
+                            BackgroundColor="{StaticResource Secondary}"
                             HasShadow="True">
                             <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
                                 <Grid.GestureRecognizers>
@@ -42,19 +40,28 @@
                                     Grid.RowSpan="2"
                                     Grid.Column="0"
                                     HeightRequest="70"
-                                    Source="{Binding RecipeImage}"
-                                    WidthRequest="70" />
+                                    WidthRequest="70">
+                                    <Image.Source>
+                                        <!--  Caché de 10 dias  -->
+                                        <UriImageSource
+                                            CacheValidity="10:00:00:00"
+                                            CachingEnabled="True"
+                                            Uri="{Binding RecipeImage}" />
+                                    </Image.Source>
+                                </Image>
                                 <Label
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     FontAttributes="Bold"
-                                    FontSize="20"
-                                    Text="{Binding RecipeName}" />
+                                    FontSize="Medium"
+                                    Text="{Binding RecipeName}"
+                                    TextColor="White" />
                                 <Label
                                     Grid.Row="1"
                                     Grid.Column="1"
-                                    FontSize="14"
-                                    Text="{Binding RecipeDescription}" />
+                                    FontSize="Default"
+                                    Text="{Binding RecipeDescription}"
+                                    TextColor="White" />
                             </Grid>
                         </Frame>
                     </DataTemplate>

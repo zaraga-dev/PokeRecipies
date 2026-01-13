@@ -18,11 +18,27 @@ public partial class RecipePageViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(LoadInitialDataCommand))] // Avisa al comando que re-evalúe si puede ejecutarse
     private bool _isBusy;
 
-    [ObservableProperty] public string _recipeId = "";
-    [ObservableProperty] private string? _statusMessage;
-    [ObservableProperty] private string _recipeName = "";
-    [ObservableProperty] private string _recipeDescription = "";
-    [ObservableProperty] private string _recipeImage = "";
+    [ObservableProperty]
+    public string _recipeId = "";
+
+    [ObservableProperty]
+    private string? _statusMessage;
+
+    [ObservableProperty]
+    private string _recipeName = "";
+
+    [ObservableProperty]
+    private string _recipeDescription = "";
+
+    [ObservableProperty]
+    private string _recipeImage = "";
+
+
+
+    partial void OnRecipeIdChanged(string value)
+    {
+        LoadInitialDataCommand.Execute(null);
+    }
 
 
     // DEFINICIÓN DEL COMANDO ASÍNCRONO
@@ -33,20 +49,16 @@ public partial class RecipePageViewModel : ObservableObject
         try
         {
             IsBusy = true;
-            StatusMessage = "Cargando datos iniciales...";
+            StatusMessage = "Cargando datos...";
 
             RecipeName = "";
             RecipeDescription = "";
             RecipeImage = "";
-
             if (string.IsNullOrWhiteSpace(RecipeId))
             {
                 await Shell.Current.GoToAsync("..");
                 return;
             }
-
-            await Task.Delay(1000);
-            StatusMessage = "Espere un poco ...";
 
             RecipeModel? selectedRecipe = await RecipeDataStore.Instance.GetRecipe(RecipeId);
             StatusMessage = "";
@@ -76,6 +88,7 @@ public partial class RecipePageViewModel : ObservableObject
         // Solo se puede loguear si NO está ocupado
         return !IsBusy;
     }
+
 
 
     //[RelayCommand]

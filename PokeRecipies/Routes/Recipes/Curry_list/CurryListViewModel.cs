@@ -13,11 +13,18 @@ public partial class CurryListViewModel : ObservableObject
 {
     private const int RECIPETYPE_CURRY = 1;
 
-    [ObservableProperty] bool _loadingRecipes = false;
-    [ObservableProperty] bool _reloadingRecipes = false;
-    [ObservableProperty] bool _viewDetail = false;
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(LoadRecipesDataCommand))]
+    bool _loadingRecipes = false;
 
-    [ObservableProperty] ObservableCollection<RecipeModel> _recipeList;
+    [ObservableProperty]
+    bool _reloadingRecipes = false;
+
+    [ObservableProperty]
+    bool _viewDetail = false;
+
+    [ObservableProperty]
+    ObservableCollection<RecipeModel> _recipeList;
 
 
     public CurryListViewModel()
@@ -54,7 +61,7 @@ public partial class CurryListViewModel : ObservableObject
         var recipes = await RecipeDataStore.Instance.GetRecipes();
         if (recipes != null)
         {
-            var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_CURRY);
+            var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_CURRY).OrderBy(x => x.Id);
             foreach (var item in filter)
             {
                 RecipeList.Add(item);
@@ -73,7 +80,7 @@ public partial class CurryListViewModel : ObservableObject
         var recipes = await RecipeDataStore.Instance.GetRecipes();
         if (recipes != null)
         {
-            var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_CURRY);
+            var filter = recipes.Where(x => x.RecipeTypeOrder == RECIPETYPE_CURRY).OrderBy(x => x.Id);
             foreach (var item in filter)
             {
                 RecipeList.Add(item);
